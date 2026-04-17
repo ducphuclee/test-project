@@ -3,8 +3,9 @@
 ## Bootstrap Guard — ĐỌC ĐẦU TIÊN, TRƯỚC MỌI THỨ KHÁC
 
 <!-- Trạng thái này do /bootstrap tự động cập nhật. Không sửa tay. -->
-**Status:** BOOTSTRAPPED
+**Status:** BOOTSTRAPPED_DEVELOPER
 **Role:** developer
+**Bootstrapped:** 2026-04-17 14:58 UTC
 
 ### Iron Law — Không bao giờ bỏ qua:
 
@@ -30,38 +31,54 @@ Khi cần implement, review, debug hay document → spawn sub-agents phù hợp 
 
 ## Project Overview
 
-**Project Name:** Claude Tools Workspace
-**Type:** Tool/Library
+**Project Name:** Test Project — Dual-Role Workflow
+**Type:** Configuration & Workflow Test
 **Stack:** JavaScript · Node.js
-**Package Manager:** npm
+**Package Manager:** npm (minimal)
+**Architecture:** Modular configuration with role-based separation
 
 ## Project Structure
 
 ```
-- .claude/: Claude-specific configurations, agents, commands, rules, skills
-- .project-info/: Project metadata and templates
-- .project-manager/: Project management files
-- docs/: Documentation (source of truth — business viết markdown ở đây, kèm link Atlassian)
-- gstack/: Unknown (possibly git stack?)
-- proposal-template/: Business proposals — Vite + React 19 + Tailwind v4, throwaway prototypes
-- scripts/: Utility scripts and hooks
-  - hooks/: Session and tool hooks
-  - utils/: Utility functions like openapi-to-markdown.js
-- superpowers/: Subproject, likely a Node.js package for superpowers functionality
-- .template/: Templates
-- install.sh: Installation script
-- README.md: Project readme
-- CLAUDE.md: This file, project instructions
-- .mcp.json: MCP configuration
-- .playwright-mcp/: Playwright MCP related files
+test-project/
+├── .claude/                 # Configuration hub
+│   ├── agents/             # Developer & business agents (pm.md shared)
+│   ├── commands/           # CLI commands for each role
+│   ├── rules/              # Shared rules (coding, testing, git, security, project-manager)
+│   └── skills/             # Role-specific skills
+├── .project-info/          # Bootstrap analysis artifacts
+│   ├── architecture.md     # System design & modules
+│   ├── stack.md            # Technology choices
+│   ├── conventions.md      # Code & process conventions
+│   ├── onboarding.md       # Developer onboarding
+│   ├── meta.md             # Bootstrap metadata
+│   ├── patterns.md         # Learned patterns
+│   └── conventions/        # Atomic convention files
+├── .project-manager/       # Session state & task tracking
+│   ├── tasks/              # in-progress, done, backlog
+│   ├── sessions/           # Checkpoints for /resume
+│   ├── knowledge/          # Decisions, blockers, context
+│   └── status.md           # Project status
+├── docs/                   # Business documentation
+│   └── README.md           # Links to Atlassian
+├── scripts/                # Utilities
+│   ├── kg.js               # Knowledge graph
+│   ├── design-search.js    # Design token search
+│   ├── hooks/              # Session hooks
+│   └── hud/                # Development HUD
+├── .mcp.json               # MCP server configuration
+├── CLAUDE.md               # This file, project instructions
+└── .git/                   # Git repository
 ```
 
 ## Important Notes
 
 <!-- Gotchas đặc thù của project — những điều Claude hay mắc lỗi -->
-- This workspace contains multiple tools and configurations for Claude/OpenCode integration
-- Subprojects like superpowers have their own CLAUDE.md and package.json
-- Scripts are primarily Node.js utilities and hooks for session management
+- **Dual-role project**: Both developer (main) and business (orphan branch) workflows active
+- **Worktree separation**: `.worktrees/business/` isolates business context
+- **Documentation source**: `docs/README.md` links to Atlassian Confluence as single source of truth
+- **No application code yet**: This is a configuration & workflow validation project
+- **Task tracking**: Always update `.project-manager/tasks/in-progress.md` when starting tasks
 
 ---
 
