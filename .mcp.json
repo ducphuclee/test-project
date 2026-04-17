@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "backlog": {
+      "command": "backlog",
+      "args": ["mcp", "start"],
+      "description": "Backlog.md — product backlog, tasks, milestones. Business tạo via browser UI, agent đọc/ghi via MCP. Cross-branch visible."
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "description": "Chain-of-thought reasoning — use for complex planning and architecture decisions"
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp", "--browser", "chromium"],
+      "description": "Browser automation — E2E testing, web scraping, visual verification"
+    }
+  },
+  "_comments": {
+    "secrets": "Never hardcode tokens here — this file is committed to git. Use ${ENV_VAR} syntax.",
+    "limit": "Keep under 10 MCPs total to preserve context window",
+    "disable": "To disable a server per-session: set disabledMcpServers in settings.local.json",
+    "add-more": "Browse full catalog at mcp-configs/mcp-servers.json in the ECC repo"
+  }
+}

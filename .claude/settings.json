@@ -1,0 +1,152 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git *)",
+      "Bash(npm *)",
+      "Bash(npx *)",
+      "Bash(pnpm *)",
+      "Bash(yarn *)",
+      "Bash(bun *)",
+      "Bash(node *)",
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(echo *)",
+      "Bash(mkdir *)",
+      "Bash(cp *)",
+      "Bash(mv *)",
+      "Bash(rm *)",
+      "Bash(which *)",
+      "Bash(pwd)",
+      "Bash(whoami)"
+    ],
+    "deny": [
+      "Bash(curl * | bash *)",
+      "Bash(wget * | bash *)"
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "node scripts/hud/index.mjs"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node scripts/hooks/session-start.js"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "agent",
+            "prompt": "Read kg/entities.jsonl and kg/relations.jsonl. Extract: (1) last 10 session entities — list their observations as recent activity grouped by date; (2) all decision entities — summarize each in 1 line; (3) all pattern entities — summarize each in 1 line; (4) all task entities with status != done — list as unfinished work; (5) key relations between entities. Write a condensed summary to .project-manager/memory.md under 600 words using this format:\n\n## Recent Activity\n[sessions grouped by date, commits + next action]\n\n## Decisions\n[decision:id — summary]\n\n## Patterns\n[pattern:id — summary]\n\n## Unfinished Work\n[task:id — status]\n\nOverwrite .project-manager/memory.md with this content.",
+            "timeout": 60
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node scripts/hooks/session-end-snapshot.js",
+            "async": true,
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "node scripts/hooks/auto-checkpoint.js",
+            "async": true,
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node scripts/hooks/subagent-log.js start",
+            "async": true,
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "node scripts/hooks/hud-agent-track.mjs start",
+            "async": true,
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node scripts/hooks/subagent-log.js stop",
+            "async": true,
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "node scripts/hooks/hud-agent-track.mjs stop",
+            "async": true,
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node scripts/hooks/suggest-compact.js"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node scripts/hooks/guard-commit.js"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node scripts/hooks/post-tool-task-tracker.js"
+          }
+        ]
+      }
+    ]
+  },
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-6",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-6",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "claude-haiku-4-5-20251001",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "claude-haiku-4-5-20251001",
+    "MAX_THINKING_TOKENS": "10000",
+    "API_TIMEOUT_MS": "300000"
+  },
+  "enabledMcpjsonFiles": [
+    ".mcp.json"
+  ]
+}
